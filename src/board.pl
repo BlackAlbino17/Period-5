@@ -1,5 +1,4 @@
-:- use_module(library(lists)).
-
+% Define o tabuleiro inicial.
 initialBoard([
     [empty, circle, empty, empty, empty],
     [square, empty, circle, empty, empty],
@@ -8,39 +7,29 @@ initialBoard([
     [empty, empty, empty, square, empty]
 ]).
 
-showGame(X) :- initialBoard(X).
+% Predicado para exibir o tabuleiro com números de linha e letras de coluna.
+display_initial_board :-
+    % Acesse o tabuleiro inicial.
+    initialBoard(Board),
 
-/*
-display_game(GameState) :-
-    length(GameState, Length),
-    write('  '), letters(1, Length), nl,
-    display_matrix(GameState, 1).
+    % Imprima o tabuleiro com números de linha e letras de coluna.
+    write('  |   A   |   B   |   C   |   D   |   E   |'), nl,
 
-% esta função print das letras em cima do board
-letters(Length, Length) :-
-    row(Length, Letter),
-    write(Letter).
-letters(N, Length) :-
-    row(N, Letter),
-    write(Letter),
-    N1 is N + 1,
-    letters(N1, Length).
+    % Chame um predicado auxiliar para exibir o tabuleiro com números de linha e letras de coluna.
+    display_board(Board, 5, 1).
 
-% faz display da matriz 
-display_matrix([], _).  
-display_matrix([H | T], Length) :-
-    (   Length < 10 -> 
-        write(' '), write(Length);
-        write(Length)
-    ),
-    display_line(H),
-    L1 is Length + 1,
-    display_matrix(T, L1).
+% Predicado auxiliar para exibir o tabuleiro com números de linha e letras de coluna.
+display_board([], 0, _).
+display_board([Row | Rest], RowNumber, Column) :-
+    write(RowNumber), write(' | '), display_row(Row, Column), nl,
+    NextRowNumber is RowNumber - 1,
+    display_board(Rest, NextRowNumber, Column).
 
-% faz display de uma linha
-display_line([]) :- nl.
-display_line([H | T]) :-
-    team(H, X),
-    write(X),
-    display_line(T).
-    */
+display_row([], _).
+display_row([Cell | Rest], Column) :-
+    format("~|~a | ", [Cell]),  % Ajuste o espaçamento para que todas as colunas tenham o mesmo tamanho.
+    NextColumn is Column + 1,
+    display_row(Rest, NextColumn).
+
+% Exemplo de uso:
+:- display_initial_board.
