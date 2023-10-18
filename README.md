@@ -25,7 +25,7 @@
 
 ## Representação interna do jogo 
 
-> A represtação é feita através de uma matriz (lista de listas) onde cada lista representa uma linha e cada tupla pertence a uma coluna. Dentro de uma matriz temos elementos do tipo square, circle e empty sendo que cada cécula têm a sua cor associada.
+> A represtação é feita através de uma matriz (lista de listas) onde cada lista representa uma linha e cada tupla pertence a uma coluna. Dentro de uma matriz temos elementos do tipo square, circle e ------ sendo que cada cécula têm a sua cor associada.
 
 ## Visualização do estado de jogo 
 

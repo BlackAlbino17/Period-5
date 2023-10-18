@@ -1,10 +1,10 @@
 % Define o tabuleiro inicial.
 initialBoard([
-    [empty, circle, empty, empty, empty],
-    [square, empty, circle, empty, empty],
-    [empty, square, cube, circle, empty],
-    [empty, empty, square, empty, circle],
-    [empty, empty, empty, square, empty]
+    [------, circle, ------, ------, ------],
+    [square, ------, circle, ------, ------],
+    [------, square, ' cube ', circle, ------],
+    [------, ------, square, ------, circle],
+    [------, ------, ------, square, ------]
 ]).
 
 % Predicado para exibir o tabuleiro com números de linha e letras de coluna.
@@ -13,7 +13,7 @@ display_initial_board :-
     initialBoard(Board),
 
     % Imprima o tabuleiro com números de linha e letras de coluna.
-    write('  |   A   |   B   |   C   |   D   |   E   |'), nl,
+    write('  |    A   |    B   |    C   |    D   |    E   |'), nl,
 
     % Chame um predicado auxiliar para exibir o tabuleiro com números de linha e letras de coluna.
     display_board(Board, 5, 1).
