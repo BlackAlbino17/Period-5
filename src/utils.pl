@@ -27,3 +27,31 @@ color(5, 2, black).
 color(5, 3, red).
 color(5, 4, yellow).
 color(5, 5, blue).
+
+
+same_letter('a', 'A').
+same_letter('b', 'B').
+same_letter('c', 'C').
+same_letter('d', 'D').
+same_letter('e', 'E').
+same_letter('f', 'F').
+same_letter('g', 'G').
+same_letter('h', 'H').
+same_letter('i', 'I').
+same_letter('j', 'J').
+same_letter('k', 'K').
+same_letter('l', 'L').
+same_letter('m', 'M').
+same_letter('n', 'N').
+same_letter('o', 'O').
+same_letter('p', 'P').
+same_letter('q', 'Q').
+same_letter('r', 'R').
+same_letter('s', 'S').
+same_letter('t', 'T').
+same_letter('u', 'U').
+same_letter('v', 'V').
+same_letter('w', 'W').
+same_letter('x', 'X').
+same_letter('y', 'Y').
+same_letter('z', 'Z').
