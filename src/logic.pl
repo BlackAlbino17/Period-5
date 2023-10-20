@@ -2,16 +2,20 @@
 :- [board].
 
 
-% Predicate to make a move.
+% P' red  'icate to make a move.
 make_move(Row, Column, Row1, Column1) :-
     display_initial_board,
-    read(Row), read(Column),
-    read(Row1), read(Column1),
+    write('Which piece do you want to move?'),nl,
+    write('Row: '),nl, read(Row),
+    write('Column'),nl, read(Column),
+    write('Where do you want to place it?'),nl,
+    write('Row: ') ,nl, read(Row1),
+    write('Column'),nl, read(Column1),
     placePieceAndRemove(Row, Column, Row1, Column1, NewBoard).
 
 
 
-% Predicado para mover a peça e remover a peça na posição original.
+% P' red  'icado para mover a peça e remover a peça na posição original.
 placePieceAndRemove(Row, Column, Row1, Column1, NewBoard) :-
     initialBoard(Board),
 
@@ -26,7 +30,7 @@ placePieceAndRemove(Row, Column, Row1, Column1, NewBoard) :-
     placePiece(TempBoard, Piece, Row1, Column1, NewBoard),
     display_board(NewBoard,1,1).
 
-% Implement the update_board predicate to update the game board based on the move.
+% Implement the update_board p' red  'icate to update the game board based on the move.
 
 replace([_|T], 1, X, [X|T]) :- !.
 replace([H|T], I, X, [H|R]) :- I > 1,
