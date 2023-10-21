@@ -21,13 +21,17 @@ display_initial_board :-
     % Acesse o tabuleiro inicial.
     initialBoard(Board),
     % Imprima o tabuleiro com números de linha e letras de coluna.
-    write('  |    A   |    B   |    C   |    D   |    E   |'), nl,
-    % Chame um p' red  'icado auxiliar para exibir o tabuleiro com números de linha e letras de coluna.
+    header,
+    % Chame um predicado auxiliar para exibir o tabuleiro com números de linha e letras de coluna.
     display_board(Board, 1, 1), nl,
+    display_color_board.
+
+display_color_board :-  
     initialBoardColor(Color),
-    display_board(Color, 1, 1), nl+.
-.
-+
+    header,
+    display_board(Color, 1, 1), nl.
+
+
 % Predicado auxiliar para exibir o tabuleiro com números de linha e letras de coluna.
 display_board([], 6, _).
 display_board([Row | Rest], RowNumber, Column) :-

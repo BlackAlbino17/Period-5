@@ -1,9 +1,11 @@
 :- use_module(library(lists)).
-:- [board].
+:- consult('utils.pl').
+:- consult('board.pl').
 
 
-% P' red  'icate to make a move.
+% Predicate to make a move.
 make_move(Row, Column, Row1, Column1) :-
+    nl,
     display_initial_board,
     write('Which piece do you want to move?'),nl,
     write('Row: '),nl, read(Row),
@@ -15,7 +17,7 @@ make_move(Row, Column, Row1, Column1) :-
 
 
 
-% P' red  'icado para mover a peça e remover a peça na posição original.
+% Predicado para mover a peça e remover a peça na posição original.
 placePieceAndRemove(Row, Column, Row1, Column1, NewBoard) :-
     initialBoard(Board),
 
@@ -28,9 +30,11 @@ placePieceAndRemove(Row, Column, Row1, Column1, NewBoard) :-
 
     % Place the piece in the new cell.
     placePiece(TempBoard, Piece, Row1, Column1, NewBoard),
-    display_board(NewBoard,1,1).
+    header,
+    display_board(NewBoard,1,1),nl,
+    display_color_board.
 
-% Implement the update_board p' red  'icate to update the game board based on the move.
+% Implement the update_board predicate to update the game board based on the move.
 
 replace([_|T], 1, X, [X|T]) :- !.
 replace([H|T], I, X, [H|R]) :- I > 1,
