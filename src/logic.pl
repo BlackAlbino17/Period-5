@@ -1,5 +1,6 @@
 :- use_module(library(lists)).
 :- consult('board.pl').
+:- consult('utils.pl').
 
 % Define a predicate to start the game loop.
 
