@@ -49,6 +49,6 @@ placePiece(Board, Piece, X, Y, NewBoard) :-
 
 
 removePiece(Board, X, Y, NewBoard) :- 
-                        nth1(Y, Board, Line),
-                        replace(Line, X, '------', NewLine),
-                        replace(Board, Y, NewLine, NewBoard).
+                        nth1(X, Board, Line),
+                        replace(Line, Y, '------', NewLine),
+                        replace(Board, X, NewLine, NewBoard).
