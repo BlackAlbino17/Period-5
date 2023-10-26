@@ -8,6 +8,7 @@ make_move(Board, Row, Column, Row1, Column1, NewBoard) :-
     write('Where do you want to place it?'), nl,
     write('Row: '), nl, read(Row1),
     write('Column: '), nl, read(Column1),
+    valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard).
 
 % Predicado para mover a peça e remover a peça na posição original.
@@ -46,24 +47,13 @@ removePiece(Board, X, Y, NewBoard) :-
                         replace(Line, Y, '------', NewLine),
                         replace(Board, X, NewLine, NewBoard).
 
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-/*
-% A move is valid if it follows the rules.
-valid_move(Board, Row, Column, Row1, Column1, Player) :-
-    is_player_piece(Piece, Player), % Check if it's the player's piece.
-    valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves.
-    \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
-    \+ opponent_winning_next_move(Board, Row1, Column1, Piece, Player). % Opponent shouldn't win next move.
 
-% Valid piece moves are orthogonal and don 't jump over other pieces or land on occupied squares.
+landing_on_occupied_square(Board, Row1, Column1, Piece) :-
+    nth1(Row1, Board, Line),
+    nth1(Column1, Line, Occupied),
+    Occupied \== '------',
+    Occupied \== Piece.
 
-valid_piece_move(Board, Row, Column, Row1, Column1, Piece) :-
-    orthogonally_moved(Row, Column, Row1, Column1),
-    \+ piece_jumps_over(Board, Row, Column, Row1, Column1),
-    \+ landing_on_occupied_square(Board, Row1, Column1, Piece).
-
-orthogonally_moved(Row, Column, Row1, Column1) :-
-    (Row == Row1, abs(Column - Column1) >= 1; Column == Column1, abs(Row - Row1) >= 1).
 
 piece_jumps_over(Board, Row, Column, Row1, Column1) :-
     \+ is_empty_path(Board, Row, Column, Row1, Column1),
@@ -85,16 +75,31 @@ is_empty_between_columns(Board, Row, Column, Column1) :-
     Column2 is Column + 1,
     (Column2 == Column1; (nth1(Row, Board, Line), nth1(Column2, Line, '------'), is_empty_between_columns(Board, Row, Column2, Column1))).
 
+orthogonally_moved(Row, Column, Row1, Column1) :-
+    (Row == Row1, abs(Column - Column1) >= 1; Column == Column1, abs(Row - Row1) >= 1).
 
-landing_on_occupied_square(Board, Row1, Column1, Piece) :-
-    nth1(Row1, Board, Line),
-    nth1(Column1, Line, Occupied),
-    Occupied \== '------',
-    Occupied \== Piece.
+valid_piece_move(Board, Row, Column, Row1, Column1, Piece) :-
+    orthogonally_moved(Row, Column, Row1, Column1),
+    \+ piece_jumps_over(Board, Row, Column, Row1, Column1),
+    \+ landing_on_occupied_square(Board, Row1, Column1, Piece).
+
+    
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*
+% A move is valid if it follows the rules.
+valid_move(Board, Row, Column, Row1, Column1, Player) :-
+    is_player_piece(Piece, Player), % Check if it's the player's piece.
+    valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves.
+    \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
+    \+ opponent_winning_next_move(Board, Row1, Column1, Piece, Player). % Opponent shouldn't win next move.
+
+
+
+
 
 cube_repeated_move(Board, Row, Column, Row1, Column1) :-
     nth1(Row, Board, Line),
-    nth1(Column, Line, ' cube '),
+    nth1(Column, Line, 'cube'),
     Row == Row1,
     Column == Column1.
 
