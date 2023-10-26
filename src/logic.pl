@@ -1,30 +1,3 @@
-:- use_module(library(lists)).
-:- consult('board.pl').
-:- consult('utils.pl').
-
-% Define a predicate to start the game loop.
-
-start_game :-
-    % Initialize the initial board and other game parameters here.
-    initialBoard(InitialBoard),
-    display_initial_board,
-    game_loop(InitialBoard, 'Player 1').
-
-% Define the game loop predicate.
-game_loop(Board, CurrentPlayer) :-
-    write(CurrentPlayer), write('\'s turn.'), nl,
-
-    make_move(Board, Row, Column, Row1, Column1, NewBoard),
-    
-    % Switch players and continue the game loop
-    switch_player(CurrentPlayer, NextPlayer),
-    game_loop(NewBoard, NextPlayer).
-
-
-% Predicate to switch players.
-switch_player('Player 1', 'Player 2').
-switch_player('Player 2', 'Player 1').
-
 
 % Predicate to make a move.
 make_move(Board, Row, Column, Row1, Column1, NewBoard) :-
@@ -73,6 +46,64 @@ removePiece(Board, X, Y, NewBoard) :-
                         replace(Line, Y, '------', NewLine),
                         replace(Board, X, NewLine, NewBoard).
 
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
+/*
+% A move is valid if it follows the rules.
+valid_move(Board, Row, Column, Row1, Column1, Player) :-
+    is_player_piece(Piece, Player), % Check if it's the player's piece.
+    valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves.
+    \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
+    \+ opponent_winning_next_move(Board, Row1, Column1, Piece, Player). % Opponent shouldn't win next move.
+
+% Valid piece moves are orthogonal and don 't jump over other pieces or land on occupied squares.
+
+valid_piece_move(Board, Row, Column, Row1, Column1, Piece) :-
+    orthogonally_moved(Row, Column, Row1, Column1),
+    \+ piece_jumps_over(Board, Row, Column, Row1, Column1),
+    \+ landing_on_occupied_square(Board, Row1, Column1, Piece).
+
+orthogonally_moved(Row, Column, Row1, Column1) :-
+    (Row == Row1, abs(Column - Column1) >= 1; Column == Column1, abs(Row - Row1) >= 1).
+
+piece_jumps_over(Board, Row, Column, Row1, Column1) :-
+    \+ is_empty_path(Board, Row, Column, Row1, Column1),
+    \+ is_empty_path(Board, Row1, Column1, Row, Column).
+
+is_empty_path(Board, Row, Column, Row1, Column1) :-
+    Row < Row1, is_empty_between_rows(Board, Row, Row1, Column).
+is_empty_path(Board, Row, Column, Row1, Column1) :-
+    Row > Row1, is_empty_between_rows(Board, Row1, Row, Column).
+is_empty_path(Board, Row, Column, Row1, Column1) :-
+    Column < Column1, is_empty_between_columns(Board, Row, Column, Column1).
+is_empty_path(Board, Row, Column, Row1, Column1) :-
+    Column > Column1, is_empty_between_columns(Board, Row, Column1, Column).
+
+is_empty_between_rows(Board, Row, Row1, Column) :-
+    Row2 is Row + 1,
+    (Row2 == Row1; (nth1(Row2, Board, Line), nth1(Column, Line, '------'), is_empty_between_rows(Board, Row2, Row1, Column))).
+is_empty_between_columns(Board, Row, Column, Column1) :-
+    Column2 is Column + 1,
+    (Column2 == Column1; (nth1(Row, Board, Line), nth1(Column2, Line, '------'), is_empty_between_columns(Board, Row, Column2, Column1))).
 
 
+landing_on_occupied_square(Board, Row1, Column1, Piece) :-
+    nth1(Row1, Board, Line),
+    nth1(Column1, Line, Occupied),
+    Occupied \== '------',
+    Occupied \== Piece.
+
+cube_repeated_move(Board, Row, Column, Row1, Column1) :-
+    nth1(Row, Board, Line),
+    nth1(Column, Line, ' cube '),
+    Row == Row1,
+    Column == Column1.
+
+
+opponent_winning_next_move(Board, Row, Column, Piece, Player) :-
+    switch_player(Player, Opponent),
+    valid_move(Board, Row, Column, _, _, Opponent), % Check if the opponent can win.
+    % Implement your win condition checking here.
+    % You need to check if the opponent's move would lead to a win in the next turn.
+    % Add your specific win condition logic.
+*/
 

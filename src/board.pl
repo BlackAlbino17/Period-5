@@ -1,19 +1,19 @@
 
 % Define o tabuleiro inicial.
 initialBoard([
-    [------, circle, ------, ------, ------],
-    [square, ------, circle, ------, ------],
-    [------, square, ' cube ', circle, ------],
-    [------, ------, square, ------, circle],
-    [------, ------, ------, square, ------]
+    [------, 'circle', ------, ------, ------],
+    ['square', ------, 'circle', ------, ------],
+    [------, 'square', ' cube ', 'circle', ------],
+    [------, ------, 'square', ------, 'circle'],
+    [------, ------, ------, 'square', ------]
 ]).
 
 initialBoardColor([
-    ['black ', ' red  ', yellow, ' blue ', 'green '],
-    [' red  ', yellow, ' blue ', 'green ', 'black '],
-    [yellow, ' blue ', 'green ', 'black ', ' red  '],
-    [' blue ', 'green ', 'black ', ' red  ', yellow],
-    ['green ', 'black ', ' red  ', yellow, ' blue ']
+    ['black ', ' red  ', 'yellow', ' blue ', 'green '],
+    [' red  ', 'yellow', ' blue ', 'green ', 'black '],
+    ['yellow', ' blue ', 'green ', 'black ', ' red  '],
+    [' blue ', 'green ', 'black ', ' red  ', 'yellow'],
+    ['green ', 'black ', ' red  ', 'yellow', ' blue ']
 ]).
 
 % Predicado para exibir o tabuleiro com números de linha e letras de coluna.
