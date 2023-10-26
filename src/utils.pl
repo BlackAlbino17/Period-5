@@ -11,6 +11,11 @@ is_player_piece('circle', 'Player 2').
 is_player_piece(' cube ', 'Player 1').
 is_player_piece(' cube ', 'Player 2').
 
+get_piece(Board, Player, Row, Column):-
+    nth1(Row, Board, Line),
+    nth1(Column, Line, Piece),
+    is_player_piece(Piece, Player).
+
 
 color(1, 1, 'black ').
 color(1, 2, ' red  ').

@@ -1,10 +1,11 @@
 
 % Predicate to make a move.
-make_move(Board, Row, Column, Row1, Column1, NewBoard) :-
+make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     nl,
     write('Which piece do you want to move?'), nl,
     write('Row: '), nl, read(Row),
     write('Column: '), nl, read(Column),
+    get_piece(Board, Player, Row, Column),
     write('Where do you want to place it?'), nl,
     write('Row: '), nl, read(Row1),
     write('Column: '), nl, read(Column1),

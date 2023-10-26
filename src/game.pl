@@ -15,7 +15,7 @@ start_game :-
 game_loop(Board, CurrentPlayer) :-
     write(CurrentPlayer), write('\'s turn.'), nl,
 
-    make_move(Board, Row, Column, Row1, Column1, NewBoard),
+    make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
     
     % Switch players and continue the game loop
     switch_player(CurrentPlayer, NextPlayer),
