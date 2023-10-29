@@ -6,16 +6,17 @@ switch_player('Player 2', 'Player 1').
 
 starting_player('Player 1').
 
-is_player_piece('square', 'Player 1').
-is_player_piece('circle', 'Player 2').
-is_player_piece(' cube ', 'Player 1').
-is_player_piece(' cube ', 'Player 2').
+get_piece('square', 'Player 1').
+get_piece('circle', 'Player 2').
+get_piece(' cube ', 'Player 1').
+get_piece(' cube ', 'Player 2').
 
-get_piece(Board, Player, Row, Column):-
+is_player_piece(Board, Player, Row, Column, Piece):-
     nth1(Row, Board, Line),
     nth1(Column, Line, Piece),
-    is_player_piece(Piece, Player).
+    get_piece(Piece, Player).
 
+initial_cube_position(3).
 
 color(1, 1, 'black ').
 color(1, 2, ' red  ').

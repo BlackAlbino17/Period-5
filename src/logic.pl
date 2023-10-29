@@ -1,15 +1,21 @@
 
 % Predicate to make a move.
 make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
+    repeat,
     nl,
     write('Which piece do you want to move?'), nl,
     write('Row: '), nl, read(Row),
     write('Column: '), nl, read(Column),
-    get_piece(Board, Player, Row, Column),
+    is_player_piece(Board, Player, Row, Column, Piece),
     write('Where do you want to place it?'), nl,
     write('Row: '), nl, read(Row1),
     write('Column: '), nl, read(Column1),
     valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
+    ((counter(Counter),Counter == 0, Piece == ' cube '  )-> retract(counter(0)), asserta(counter(1)),counter(X),write(X),nl, set_prevCubePos(Row,Column);
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> \+ cube_non_repeated_move(Row, Column, Row1, Column1),fail;
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> cube_non_repeated_move(Row, Column, Row1, Column1),nl,counter(X),write(X),nl;
+    (counter(Counter),Counter == 1)->retract(counter(1)), asserta(counter(0));
+    true),
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard).
 
 % Predicado para mover a peça e remover a peça na posição original.
@@ -84,25 +90,37 @@ valid_piece_move(Board, Row, Column, Row1, Column1, Piece) :-
     \+ piece_jumps_over(Board, Row, Column, Row1, Column1),
     \+ landing_on_occupied_square(Board, Row1, Column1, Piece).
 
+
+% Predicate to handle a cube move.
+
+cube_non_repeated_move(Row, Column, Row1, Column1) :-
+    prevCubeX(X),
+    prevCubeY(Y),
+    write(X),
+    write(Y),
+    write(Row1),
+    write(Column1),
+    dif(X, Row1); dif(Y,Column1),
+    set_prevCubePos(Row,Column).
+
+set_prevCubePos(Row,Column):-
+    retract(prevCubeX(X)),
+    retract(prevCubeY(Y)),
+    asserta(prevCubeX(Row)),
+    asserta(prevCubeY(Column)).
+
     
 /* ------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*
 % A move is valid if it follows the rules.
 valid_move(Board, Row, Column, Row1, Column1, Player) :-
-    is_player_piece(Piece, Player), % Check if it's the player's piece.
+    is_player_piece(Board, Player, Row, Column, Piece), % Check if it's the player's piece.
     valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves.
     \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
     \+ opponent_winning_next_move(Board, Row1, Column1, Piece, Player). % Opponent shouldn't win next move.
 
 
 
-
-
-cube_repeated_move(Board, Row, Column, Row1, Column1) :-
-    nth1(Row, Board, Line),
-    nth1(Column, Line, 'cube'),
-    Row == Row1,
-    Column == Column1.
 
 
 opponent_winning_next_move(Board, Row, Column, Piece, Player) :-
