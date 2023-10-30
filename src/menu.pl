@@ -3,6 +3,7 @@
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('game.pl').
+:- use_module(library(lists)).
 
 
 display_main_menu :-
@@ -31,7 +32,7 @@ menu_option(_) :- write('Invalid choice'), nl, play.
 player_player:-initialBoard(InitialBoard),
                 display_initial_board,
              game_loop(InitialBoard, 'Player 1').
-player_ai :- 
+% player_ai :- 
 
 play :- ask_option(Choice),
         menu_option(Choice).

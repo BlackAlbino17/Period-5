@@ -1,3 +1,5 @@
+:-use_module(library(lists)).
+
 
 % Predicate to make a move.
 make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
@@ -104,14 +106,14 @@ get_player_colors(Board, Player, PlayerColors, BoardColors) :-
 
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
-% Predicado para lista de    moves de um jogador 
+% Predicado para lista de  moves de um jogador 
 
 get_player_moves(Board, Player, Moves) :-
     findall((Row, Column, Row1, Column1), (
         between(1, 5, Row), 
         between(1, 5, Column),
         get_piece(Board, Player, Row, Column),
-        valid_piece_moves(Board, Row, Column, Row1, Column1, Player)
+        valid_piece_move(Board, Row, Column, Row1, Column1, Piece)
     ), Moves).
 
 

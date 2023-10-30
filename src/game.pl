@@ -1,25 +1,28 @@
-:- use_module(library(lists)).
+:- use_module(library(sets)).
+:- use_module(library(between)).
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('board.pl').
 
-% Define a predicate to start the game loop.
+
+
 
 start_game :-
-    % Initialize the initial board and other game parameters here.
     initialBoard(InitialBoard),
     display_initial_board,
     game_loop(InitialBoard, 'Player 1').
 
-% Define the game loop predicate.
+
 game_loop(Board, CurrentPlayer) :-
     write(CurrentPlayer), write('\'s turn.'), nl,
     
-    (opponent_winning_next_move(Board, CurrentPlayer) -> \+ is_player_piece(' cube ', CurrentPlayer); is_player_piece(' cube ', CurrentPlayer)),
+   (opponent_winning_next_move(Board, CurrentPlayer) -> 
+    \+ is_player_piece(' cube ', CurrentPlayer); 
+    is_player_piece(' cube ', CurrentPlayer)),
 
     make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
     
-    (player_victory(NewBoard, CurrentPlayer) -> end_game(CurrentPlayer)),
+    (player_victory(Board, CurrentPlayer) -> end_game(CurrentPlayer); true),
     switch_player(CurrentPlayer, NextPlayer),
     game_loop(NewBoard, NextPlayer).
 
