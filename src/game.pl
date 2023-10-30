@@ -3,6 +3,8 @@
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('board.pl').
+:- consult('input.pl').
+:- consult('menu.pl').
 
 
 
@@ -15,10 +17,6 @@ start_game :-
 
 game_loop(Board, CurrentPlayer) :-
     write(CurrentPlayer), write('\'s turn.'), nl,
-    
-   (opponent_winning_next_move(Board, CurrentPlayer) -> 
-    \+ is_player_piece(' cube ', CurrentPlayer); 
-    is_player_piece(' cube ', CurrentPlayer)),
 
     make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
     
@@ -27,12 +25,16 @@ game_loop(Board, CurrentPlayer) :-
     game_loop(NewBoard, NextPlayer).
 
 
-
 player_victory(Board, CurrentPlayer):- 
-    color_check(Board, Player),
-    one_piece_per_column_check(Board, Player).
+    color_check(Board, CurrentPlayer),
+    one_piece_per_column_check(Board, CurrentPlayer).
 
-end_game(Player) :-
-    display_end_game_menu(Player),
+end_game(CurrentPlayer) :-
+    display_end_game_menu(CurrentPlayer),
     ask_eog_option(Choice),
     end_game_option(Choice).
+/*
+   (opponent_winning_next_move(Board, CurrentPlayer) -> 
+       \+ is_player_piece(' cube ', CurrentPlayer); 
+       is_player_piece(' cube ', CurrentPlayer)),
+       */

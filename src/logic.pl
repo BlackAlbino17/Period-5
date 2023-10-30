@@ -1,17 +1,11 @@
-:-use_module(library(lists)).
+
+
+
 
 
 % Predicate to make a move.
 make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
-    nl,
-    write('Which piece do you want to move?'), nl,
-    write('Row: '), nl, read(Row),
-    write('Column: '), nl, read(Column),
-    get_piece(Board, Player, Row, Column),
-    write('Where do you want to place it?'), nl,
-    write('Row: '), nl, read(Row1),
-    write('Column: '), nl, read(Column1),
-    valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
+    validate_move(Board, Player, Row, Column, Row1, Column1),
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard).
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -95,10 +89,15 @@ opponent_winning_next_move(Board, Player) :-
 
 get_player_colors(Board, Player, PlayerColors, BoardColors) :-
     initialBoardColor(BoardColors),
-    findall(Color, (nth1(Row, Board, Line), nth1(Column, Line, Piece),
-        is_player_piece(Piece, Player), nth1(Row, BoardColors, Color)),
-        PlayerColors),
+    findall(Color, (
+        nth1(Row, Board, Line), 
+        nth1(Column, Line, Piece),
+        is_player_piece(Piece, Player),
+        nth1(Row, BoardColors, RowColors),
+        nth1(Column, RowColors, Color)
+    ), PlayerColors),
     list_to_set(PlayerColors, UniquePlayerColors).
+
 
 
     % (length(UniquePlayerColors, 4) -> Flag = true ; Flag = false). May Not Be Needed Because i can just do
@@ -135,7 +134,7 @@ color_check(Board, Player) :-
     length(PlayerColors, 5).  
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
-% Predicado Para Player has 1 Piece In Each Column
+% Predicado Para Player1 or 2 has 1 Piece In Each Column
  
  one_piece_per_column_check(Board, Player) :-
     findall(Column,

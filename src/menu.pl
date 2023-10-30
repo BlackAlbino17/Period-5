@@ -1,9 +1,5 @@
-:- consult('input.pl').
-:- consult('board.pl').
-:- consult('logic.pl').
-:- consult('utils.pl').
-:- consult('game.pl').
-:- use_module(library(lists)).
+
+
 
 
 display_main_menu :-
