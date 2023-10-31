@@ -1,6 +1,7 @@
 :- dynamic counter/1, prevCubeX/1, prevCubeY/1.
 
 :- use_module(library(lists)).
+:- use_module(library(between)).
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('board.pl').

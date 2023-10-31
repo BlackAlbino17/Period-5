@@ -109,6 +109,36 @@ set_prevCubePos(Row,Column):-
     asserta(prevCubeX(Row)),
     asserta(prevCubeY(Column)).
 
+
+get_all_player_moves(Board, Player, ValidMoves) :-
+    get_all_player_pieces_positions(Board, Player, Positions),
+    get_moves(Positions, Player, Board, [], ValidMoves).
+
+get_moves([], _, _, ValidMoves, ValidMoves).
+get_moves([(Row, Column) | Rest], Player, Board, Acc, ValidMoves) :-
+    findall((Row, Column, Row1, Column1), (
+        between(1, 5, Row1),
+        between(1, 5, Column1),
+        valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
+        is_player_piece(Board, Player, Row, Column, Piece)
+    ), Moves),
+    append(Acc, Moves, NewAcc),
+    get_moves(Rest, Player, Board, NewAcc, ValidMoves).
+
+
+
+
+get_all_player_pieces_positions(Board, Player, Positions) :-
+    findall((Row, Column), (
+        nth1(Row, Board, Line),
+        nth1(Column, Line, Piece),
+        get_piece(Piece, Player)
+    ), Positions).
+
+
+
+
+
     
 /* ------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*
