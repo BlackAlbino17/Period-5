@@ -3,7 +3,8 @@
 make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     repeat,
     nl,
-    (Player == 'Player 1' ->   
+    
+    ((Player == 'Player 1'; Player == 'Player 2') ->   
     write('Which piece do you want to move?'), nl,
     write('Row: '), nl, read(Row),
     write('Column: '), nl, read(Column),
@@ -12,9 +13,9 @@ make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     write('Row: '), nl, read(Row1),
     write('Column: '), nl, read(Column1),
     valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
-    ((counter(Counter),Counter == 0, Piece == ' cube '  )-> retract(counter(0)), asserta(counter(1)),counter(X),write(X),nl, set_prevCubePos(Row,Column);
+    ((counter(Counter),Counter == 0, Piece == ' cube '  )-> retract(counter(0)), asserta(counter(1)), set_prevCubePos(Row,Column);
     (counter(Counter),Counter == 1, Piece == ' cube '  )-> \+ cube_non_repeated_move(Row, Column, Row1, Column1),fail;
-    (counter(Counter),Counter == 1, Piece == ' cube '  )-> cube_non_repeated_move(Row, Column, Row1, Column1),nl,counter(X),write(X),nl;
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> cube_non_repeated_move(Row, Column, Row1, Column1);
     (counter(Counter),Counter == 1)->retract(counter(1)), asserta(counter(0));
     true),
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard);
@@ -98,10 +99,6 @@ valid_piece_move(Board, Row, Column, Row1, Column1, Piece) :-
 cube_non_repeated_move(Row, Column, Row1, Column1) :-
     prevCubeX(X),
     prevCubeY(Y),
-    write(X),
-    write(Y),
-    write(Row1),
-    write(Column1),
     dif(X, Row1); dif(Y,Column1),
     set_prevCubePos(Row,Column).
 

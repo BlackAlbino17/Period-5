@@ -1,22 +1,5 @@
 header:- write('  |    A   |    B   |    C   |    D   |    E   |'), nl.
 
-% Predicate to switch players.
-% switch_player('Player 1', 'Player 2').
-% switch_player('Player 2', 'Player 1').
-switch_player('Player 1', 'AI 2').
-switch_player('AI 2', 'Player 1').
-
-starting_player('Player 1').
-
-get_piece('square', 'Player 1').
-get_piece('circle', 'Player 2').
-get_piece(' cube ', 'Player 1').
-get_piece(' cube ', 'Player 2').
-get_piece('square', 'AI 1').
-get_piece('circle', 'AI 2').
-get_piece(' cube ', 'AI 1').
-get_piece(' cube ', 'AI 2').
-
 is_player_piece(Board, Player, Row, Column, Piece):-
     nth1(Row, Board, Line),
     nth1(Column, Line, Piece),

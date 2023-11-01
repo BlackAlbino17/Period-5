@@ -28,10 +28,18 @@ menu_option(_) :- write('Invalid choice'), nl, play.
 
 
 
-player_player:-initialBoard(InitialBoard),
-                display_initial_board,
-             game_loop(InitialBoard, 'Player 1').
+player_player:-
+            CurrentPlayer = 'Player 1',
+            NextPlayer = 'Player 2',
+            start_game(CurrentPlayer,NextPlayer).
+
+player_ai:-
+            CurrentPlayer = 'Player 1',
+            NextPlayer = 'AI',
+            start_game(CurrentPlayer,NextPlayer).
 
 play :- ask_option(Choice),
         menu_option(Choice).
+
+
 
