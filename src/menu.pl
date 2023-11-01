@@ -41,5 +41,20 @@ player_ai:-
 play :- ask_option(Choice),
         menu_option(Choice).
 
+display_end_game_menu(Player) :-
+    nl,
+    write('************************************'), nl,
+    format('*        ~w wins the game!      *', [Player]), nl,
+    write('************************************'), nl,
 
+    write('1. Return to Menu'), nl,
+    write('2. Exit'), nl,
+    write('Enter Your Choice: ').
+
+ask_eog_option(Choice) :-
+    read(Choice).
+
+end_game_option(1) :- play.
+end_game_option(2) :- halt.
+end_game_option(_) :- write('Invalid choice'), nl, play.    
 

@@ -3,7 +3,10 @@
 make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     repeat,
     nl,
-    
+ /*   (winning_next_move(Board, CurrentPlayer) -> 
+       retract((is_player_piece(' cube ', NextPlayer)));
+       true),
+       */
     ((Player == 'Player 1'; Player == 'Player 2') ->   
     write('Which piece do you want to move?'), nl,
     write('Row: '), nl, read(Row),
@@ -31,11 +34,8 @@ placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard) :-
     removePiece(Board, Row, Column, TempBoard),
 
     % Place the piece in the new cell.
-    placePiece(TempBoard, Piece, Row1, Column1, NewBoard),
-    header,
-    display_board(NewBoard, 1, 1),
-    nl,
-    display_color_board.
+    placePiece(TempBoard, Piece, Row1, Column1, NewBoard).
+
 
 
 % Implement the update_board predicate to update the game board based on the move.
@@ -125,8 +125,6 @@ get_moves([(Row, Column) | Rest], Player, Board, Acc, ValidMoves) :-
     get_moves(Rest, Player, Board, NewAcc, ValidMoves).
 
 
-
-
 get_all_player_pieces_positions(Board, Player, Positions) :-
     findall((Row, Column), (
         nth1(Row, Board, Line),
@@ -135,6 +133,65 @@ get_all_player_pieces_positions(Board, Player, Positions) :-
     ), Positions).
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+winning_next_move(Board, Player) :-
+
+    get_all_player_moves(Board, Player, ValidMoves),
+    member((Row, Column, Row1, Column1), ValidMoves),
+    simulate_move(Board, Row, Column, Row1, Column1, SimulatedBoard, Player).
+
+
+simulate_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
+    copy_term(Board, NewBoard),
+    placePieceAndRemove(NewBoard, Row, Column, Row1, Column1, Recent),
+    one_piece_per_column_check(Recent, Player),
+    color_check(Recent, Player).
+
+
+% Predicado para lista de cores de um jogador
+
+get_player_colors(Board, Player, PlayerColors, BoardColors) :-
+    initialBoardColor(BoardColors),
+    findall(Color, (
+        nth1(Row, Board, Line), 
+        nth1(Column, Line, Piece),
+        get_piece(Piece, Player),
+        nth1(Row, BoardColors, RowColors),
+        nth1(Column, RowColors, Color)
+    ), RawPlayerColors),
+    list_to_set(RawPlayerColors, PlayerColors).
+
+% Predicado Para Player has 5 Colors
+color_check(Board, Player) :-
+    get_player_colors(Board, Player, PlayerColors, _),
+    length(PlayerColors, 5).  
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------- */
+% Predicado Para Player1 or 2 has 1 Piece In Each Column
+ 
+ one_piece_per_column_check(Board, Player) :-
+    findall(Column,
+    (
+        between(1, 5, Column),
+        member(Row, [1, 2, 3, 4, 5]),
+        is_player_piece(Board, Player, Row, Column,Piece)
+
+    ), Columns),
+    list_to_set(Columns, UniqueColumns),
+    length(UniqueColumns, 5).
 
 
 
