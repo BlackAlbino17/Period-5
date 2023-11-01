@@ -11,10 +11,24 @@ is_player_piece('circle', 'Player 2').
 is_player_piece(' cube ', 'Player 1').
 is_player_piece(' cube ', 'Player 2').
 
-get_piece(Board, Player, Row, Column):-
+get_piece(Board, Player, Row, Column, Piece):-
     nth1(Row, Board, Line),
     nth1(Column, Line, Piece),
     is_player_piece(Piece, Player).
+
+get_all_player_pieces_positions(Board, Player, Positions) :-
+    findall((Row, Column), (
+        nth1(Row, Board, Line),
+        nth1(Column, Line, Piece),
+        is_player_piece(Piece, Player)
+    ), Positions).
+
+get_all_player_moves(Board, Player, ValidMoves) :-
+    get_all_player_pieces_positions(Board, Player, Positions),
+    get_moves(Positions, Player, Board, [], ValidMoves).
+
+
+
 
 
 color(1, 1, 'black ').

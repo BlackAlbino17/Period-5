@@ -10,7 +10,7 @@ validate_move(Board, Player, Row, Column, Row1, Column1) :-
     write('Which piece do you want to move?'), nl,
     write('Row: '), nl, read(Row),
     write('Column: '), nl, read(Column),
-    (get_piece(Board, Player, Row, Column) ->
+    (get_piece(Board, Player, Row, Column,Piece) ->
         write('Where do you want to place it?'), nl,
         write('Row: '), nl, read(Row1),
         write('Column: '), nl, read(Column1),

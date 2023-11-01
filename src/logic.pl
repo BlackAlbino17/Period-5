@@ -18,11 +18,7 @@ placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard) :-
     removePiece(Board, Row, Column, TempBoard),
 
     % Place the piece in the new cell.
-    placePiece(TempBoard, Piece, Row1, Column1, NewBoard),
-    header,
-    display_board(NewBoard, 1, 1),
-    nl,
-    display_color_board.
+    placePiece(TempBoard, Piece, Row1, Column1, NewBoard).
 
 replace([_|T], 1, X, [X|T]) :- !.
 replace([H|T], I, X, [H|R]) :- I > 1,
@@ -71,18 +67,32 @@ is_empty_between_columns(Board, Row, Column, Column1) :-
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
 orthogonally_moved(Row, Column, Row1, Column1) :-
     (Row == Row1, abs(Column - Column1) >= 1; Column == Column1, abs(Row - Row1) >= 1).
+
+
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
 valid_piece_move(Board, Row, Column, Row1, Column1, Piece) :-
     orthogonally_moved(Row, Column, Row1, Column1),
     \+ piece_jumps_over(Board, Row, Column, Row1, Column1),
     \+ landing_on_occupied_square(Board, Row1, Column1, Piece).
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
+winning_next_move(Board, Player) :-
 
-opponent_winning_next_move(Board, Player) :-
-    switch_player(Player, Opponent),
-    get_player_colors(Board, Opponent, PlayerColors, _),
-    get_player_moves(Board, Opponent, _),
-    final_check(Board, Opponent).
+    get_all_player_moves(Board, Player, ValidMoves),
+    member((Row, Column, Row1, Column1), ValidMoves),
+    simulate_move(Board, Row, Column, Row1, Column1, SimulatedBoard, Player).
+
+
+simulate_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
+    copy_term(Board, NewBoard),
+    placePieceAndRemove(NewBoard, Row, Column, Row1, Column1, Recent),
+    one_piece_per_column_check(Recent, Player),
+    color_check(Recent, Player).
+
+
+
+
+
+
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 % Predicado para lista de cores de um jogador
@@ -95,8 +105,9 @@ get_player_colors(Board, Player, PlayerColors, BoardColors) :-
         is_player_piece(Piece, Player),
         nth1(Row, BoardColors, RowColors),
         nth1(Column, RowColors, Color)
-    ), PlayerColors),
-    list_to_set(PlayerColors, UniquePlayerColors).
+    ), RawPlayerColors),
+    list_to_set(RawPlayerColors, PlayerColors).
+
 
 
 
@@ -105,27 +116,31 @@ get_player_colors(Board, Player, PlayerColors, BoardColors) :-
 
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
-% Predicado para lista de  moves de um jogador 
+% Predicate to make a list of all possible valid moves a player can make
 
-get_player_moves(Board, Player, Moves) :-
+
+get_moves([], _, _, ValidMoves, ValidMoves).
+get_moves([(Row, Column) | Rest], Player, Board, Acc, ValidMoves) :-
     findall((Row, Column, Row1, Column1), (
-        between(1, 5, Row), 
-        between(1, 5, Column),
-        get_piece(Board, Player, Row, Column),
-        valid_piece_move(Board, Row, Column, Row1, Column1, Piece)
-    ), Moves).
+        between(1, 5, Row1),
+        between(1, 5, Column1),
+        valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
+        get_piece(Board, Player, Row, Column, Piece)
+    ), Moves),
+    append(Acc, Moves, NewAcc),
+    get_moves(Rest, Player, Board, NewAcc, ValidMoves).
+
+
+
+
+
+
+
 
 
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
-final_check(Board, Player) :-
-    get_player_moves(Board, Player, Moves), 
-    final_check_moves(Board, Player, Moves).  
 
-final_check_moves(_, _, []) :- false.
-final_check_moves(Board, Player, [(Row, Column, Row1, Column1) | Missing]) :-
-    (color_check(Board, Player), one_piece_per_column_check(Board, Player))-> true;
-    final_check_moves(Board, Player, Missing).
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
 % Predicado Para Player has 5 Colors
@@ -141,7 +156,7 @@ color_check(Board, Player) :-
     (
         between(1, 5, Column),
         member(Row, [1, 2, 3, 4, 5]),
-        get_piece(Board, Player, Row, Column)
+        get_piece(Board, Player, Row, Column,Piece)
 
     ), Columns),
     list_to_set(Columns, UniqueColumns),
@@ -183,7 +198,7 @@ valid_move(Board, Row, Column, Row1, Column1, Player) :-
     is_player_piece(Piece, Player), % Check if it's the player's piece. %checked
     valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves. 
     \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
-    \+ opponent_winning_next_move(Board, Row1, Column1, Piece, Player). % Opponent shouldn't win next move.
+    \+ Player_winning_next_move(Board, Row1, Column1, Piece, Player). % Player shouldn't win next move.
 
 
 
@@ -196,11 +211,11 @@ cube_repeated_move(Board, Row, Column, Row1, Column1) :-
     Column == Column1.
 
 
-opponent_winning_next_move(Board, Row, Column, Piece, Player) :-
-    switch_player(Player, Opponent),
-    valid_move(Board, Row, Column, _, _, Opponent), % Check if the opponent can win.
+Player_winning_next_move(Board, Row, Column, Piece, Player) :-
+    switch_player(Player, Player),
+    valid_move(Board, Row, Column, _, _, Player), % Check if the Player can win.
     % Implement your win condition checking here.
-    % You need to check if the opponent's move would lead to a win in the next turn.
+    % You need to check if the Player's move would lead to a win in the next turn.
     % Add your specific win condition logic.
 */
 

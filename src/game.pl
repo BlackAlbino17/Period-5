@@ -17,12 +17,22 @@ start_game :-
 
 game_loop(Board, CurrentPlayer) :-
     write(CurrentPlayer), write('\'s turn.'), nl,
-
-    make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
-    
     (player_victory(Board, CurrentPlayer) -> end_game(CurrentPlayer); true),
+    make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
+    (player_victory(NewBoard, CurrentPlayer) -> end_game(CurrentPlayer); true),
+    header,
+    display_board(NewBoard, 1, 1),
+    nl,
+    display_color_board,
+
+/*
+    (winning_next_move(NewBoard, CurrentPlayer) -> 
+       \+ is_player_piece(' cube ', NextPlayer); 
+       is_player_piece(' cube ', NextPlayer)),
+*/
     switch_player(CurrentPlayer, NextPlayer),
     game_loop(NewBoard, NextPlayer).
+
 
 
 player_victory(Board, CurrentPlayer):- 
@@ -33,8 +43,11 @@ end_game(CurrentPlayer) :-
     display_end_game_menu(CurrentPlayer),
     ask_eog_option(Choice),
     end_game_option(Choice).
-/*
-   (opponent_winning_next_move(Board, CurrentPlayer) -> 
-       \+ is_player_piece(' cube ', CurrentPlayer); 
-       is_player_piece(' cube ', CurrentPlayer)),
-       */
+
+
+
+
+
+
+
+

@@ -44,9 +44,8 @@ display_end_game_menu(Player) :-
     write('Enter Your Choice: ').
 
 ask_eog_option(Choice) :-
-    display_end_game_menu(Player),
     read(Choice).
 
 end_game_option(1) :- play.
-end_game_option(2) :- true.
+end_game_option(2) :- halt.
 end_game_option(_) :- write('Invalid choice'), nl, play.    
