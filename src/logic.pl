@@ -102,7 +102,7 @@ get_player_colors(Board, Player, PlayerColors, BoardColors) :-
     findall(Color, (
         nth1(Row, Board, Line), 
         nth1(Column, Line, Piece),
-        is_player_piece(Piece, Player),
+        get_piece(Piece, Player),
         nth1(Row, BoardColors, RowColors),
         nth1(Column, RowColors, Color)
     ), RawPlayerColors),
@@ -125,7 +125,7 @@ get_moves([(Row, Column) | Rest], Player, Board, Acc, ValidMoves) :-
         between(1, 5, Row1),
         between(1, 5, Column1),
         valid_piece_move(Board, Row, Column, Row1, Column1, Piece),
-        get_piece(Board, Player, Row, Column, Piece)
+        is_player_piece(Board, Player, Row, Column, Piece)
     ), Moves),
     append(Acc, Moves, NewAcc),
     get_moves(Rest, Player, Board, NewAcc, ValidMoves).
@@ -156,7 +156,7 @@ color_check(Board, Player) :-
     (
         between(1, 5, Column),
         member(Row, [1, 2, 3, 4, 5]),
-        get_piece(Board, Player, Row, Column,Piece)
+        is_player_piece(Board, Player, Row, Column,Piece)
 
     ), Columns),
     list_to_set(Columns, UniqueColumns),
@@ -195,7 +195,7 @@ Show ("Player_X") won the game,
 /*
 % A move is valid if it follows the rules.
 valid_move(Board, Row, Column, Row1, Column1, Player) :-
-    is_player_piece(Piece, Player), % Check if it's the player's piece. %checked
+    get_piece(Piece, Player), % Check if it's the player's piece. %checked
     valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves. 
     \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
     \+ Player_winning_next_move(Board, Row1, Column1, Piece, Player). % Player shouldn't win next move.

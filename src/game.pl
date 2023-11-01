@@ -20,6 +20,7 @@ game_loop(Board, CurrentPlayer) :-
     (player_victory(Board, CurrentPlayer) -> end_game(CurrentPlayer); true),
     make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
     (player_victory(NewBoard, CurrentPlayer) -> end_game(CurrentPlayer); true),
+    
     header,
     display_board(NewBoard, 1, 1),
     nl,
@@ -27,8 +28,8 @@ game_loop(Board, CurrentPlayer) :-
 
 /*
     (winning_next_move(NewBoard, CurrentPlayer) -> 
-       \+ is_player_piece(' cube ', NextPlayer); 
-       is_player_piece(' cube ', NextPlayer)),
+       \+ get_piece(' cube ', NextPlayer); 
+       get_piece(' cube ', NextPlayer)),
 */
     switch_player(CurrentPlayer, NextPlayer),
     game_loop(NewBoard, NextPlayer).
