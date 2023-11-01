@@ -5,6 +5,9 @@ is_player_piece(Board, Player, Row, Column, Piece):-
     nth1(Column, Line, Piece),
     get_piece(Piece, Player).
 
+
+
+
 initial_cube_position(3).
 
 color(1, 1, 'black ').

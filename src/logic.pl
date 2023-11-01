@@ -137,16 +137,6 @@ get_all_player_pieces_positions(Board, Player, Positions) :-
 
 
 
-
-
-
-
-
-
-
-
-
-
 winning_next_move(Board, Player) :-
 
     get_all_player_moves(Board, Player, ValidMoves),

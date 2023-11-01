@@ -29,9 +29,14 @@ start_game(CurrentPlayer,NextPlayer) :-
     game_loop(InitialBoard, CurrentPlayer, NextPlayer).
 
 % Define the game loop predicate.
-game_loop(Board, CurrentPlayer, NextPlayer) :- 
+game_loop(Board, CurrentPlayer, NextPlayer) :-
     write(CurrentPlayer), write('\'s turn.'), nl,
-    make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
+    (winning_next_move(Board, NextPlayer) ->
+        retract(get_piece(' cube ', CurrentPlayer)),
+        make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer),
+        asserta(get_piece(' cube ', CurrentPlayer)) 
+    ;
+    make_move(Board, Row, Column, Row1, Column1, NewBoard, CurrentPlayer)),
     (player_victory(NewBoard, CurrentPlayer) -> end_game(CurrentPlayer); true),
     header,
     display_board(NewBoard, 1, 1),
@@ -41,17 +46,6 @@ game_loop(Board, CurrentPlayer, NextPlayer) :-
     % Switch players and continue the game loop
     switch_player(CurrentPlayer, NextPlayer),
     game_loop(NewBoard, NextPlayer, CurrentPlayer).
-
-
-
-
-
-
-
-
-
-
-
 
 
 

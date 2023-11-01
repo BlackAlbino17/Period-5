@@ -23,7 +23,7 @@ ask_option(Choice) :-
 menu_option(1) :- player_player, play.
 menu_option(2) :- player_ai, play.
 menu_option(3) :- ai_ai, play.
-menu_option(4) :- true.
+menu_option(4) :- halt.
 menu_option(_) :- write('Invalid choice'), nl, play.
 
 
