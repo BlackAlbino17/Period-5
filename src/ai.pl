@@ -1,18 +1,13 @@
-% Step 1: Predicate to generate valid moves for a player.
-valid_moves(Board, Player, ValidMoves) :-
-    findall([Row, Column, NewRow, NewColumn], (
-        is_player_piece(Board, Player, Row, Column, Piece),
-        valid_piece_move(Board, Row, Column, NewRow, NewColumn, Piece)
-    ), ValidMoves).
+easy_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard) :- 
+    get_all_player_moves(Board, Player, ValidMoves),
+    random_member((Row, Column, Row1, Column1), ValidMoves),
+    ((counter(Counter),Counter == 0, Piece == ' cube '  )-> retract(counter(0)), asserta(counter(1)),counter(X),write(X),nl, set_prevCubePos(Row,Column);
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> \+ cube_non_repeated_move(Row, Column, Row1, Column1),fail;
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> cube_non_repeated_move(Row, Column, Row1, Column1),nl,counter(X),write(X),nl;
+    (counter(Counter),Counter == 1)->retract(counter(1)), asserta(counter(0));
+    true),
+    sleep(2),
+    placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard),
+    write(Row),nl,write(Column),nl,write(Row1),nl,write(Column1).
 
-% Step 2: Predicate for the easy level AI to choose a random move.
-easy_level_ai(Board, Player, Row, Column, NewRow, NewColumn) :-
-    valid_moves(Board, Player, ValidMoves),
-    length(ValidMoves, NumValidMoves),
-    random(0, NumValidMoves, RandomIndex),
-    nth0(RandomIndex, ValidMoves, [Row, Column, NewRow, NewColumn]).
 
-% Step 3: In the game loop, for the AI's turn (easy level).
-% Assuming the AI player is 'AIPlayer', you can call:
-easy_level_ai(Board, 'AIPlayer', Row, Column, NewRow, NewColumn),
-make_move(Board, Row, Column, NewRow, NewColumn, NewBoard, 'AIPlayer').

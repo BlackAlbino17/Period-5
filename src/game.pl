@@ -1,10 +1,14 @@
 :- dynamic counter/1, prevCubeX/1, prevCubeY/1.
 
 :- use_module(library(lists)).
+:- use_module(library(random)).
 :- use_module(library(between)).
+:- use_module(library(system)).
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('board.pl').
+:- consult('ai.pl').
+
 
 % Define a predicate to start the game loop.
 
