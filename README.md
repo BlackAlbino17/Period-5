@@ -4,6 +4,10 @@
 > João Pedro Oliveira Sequeira - up202108823
 > Tiago Rocha Silveira Pires - up202008790
 
+### Contribuição 
+> João Pedro Oliveira Sequeira - 50%
+> Tiago Rocha Silveira Pires - 50%
+
 # Instalação e Execução
 > Para executar o jogo é necessário fazer *consult* do ficheiro menu.pl e depois executar "play.".
 
@@ -29,8 +33,13 @@
 
 ## Visualização do estado de jogo 
 
-> O ficheiro principal menu.pl contém a função play/0 que chama o menú onde o utilizador escolherá o modo de jogo pretendido (player vs player, player vs ai ou ai vs ai).
-> A função display_game está implementada em board.pl permitindo a visualização do estado do jogo. 
+> O ficheiro principal menu.pl contém a função play/0 que chama o menú onde o utilizador escolherá o modo de jogo pretendido (player vs player, player vs ai, ai vs player ou ai vs ai).
+
+> A função display_board está implementada em board.pl permitindo a visualização do estado do jogo. 
 
 # Conclusões 
+
+> O AI poderia ser melhorado no que diz respeito ao **predict** de jogadas futuras, isto é, só consegue prever uma única jogada baseada na disposição atual do tabuleiro, não consegue prever múltiplas jogadas numa só rodada.
+
+
 
