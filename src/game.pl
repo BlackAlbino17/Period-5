@@ -2,6 +2,7 @@
 :- use_module(library(sets)).
 :- use_module(library(between)).
 :- use_module(library(random)).
+:- use_module(library(system)).
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('board.pl').

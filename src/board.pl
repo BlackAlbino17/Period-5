@@ -1,11 +1,13 @@
 :- use_module(library(lists)).
 % Define o tabuleiro inicial.
+
+
 initialBoard([
-    [------, ------,------, ------, ------],
+    [------, 'circle', ------, ------, ------],
     ['square', ------, 'circle', ------, ------],
-    [------, 'square',  ------, 'circle',' cube '],
+    [------, 'square', ' cube ', 'circle', ------],
     [------, ------, 'square', ------, 'circle'],
-    [------, 'circle', ------, 'square', ------]
+    [------, ------, ------, 'square', ------]
 ]).
 
 initialBoardColor([
