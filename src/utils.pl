@@ -1,4 +1,4 @@
-header:- write('  |    A   |    B   |    C   |    D   |    E   |'), nl.
+header:- write('  |    1   |    2   |    3   |    4   |    5   |'), nl.
 
 is_player_piece(Board, Player, Row, Column, Piece):-
     nth1(Row, Board, Line),

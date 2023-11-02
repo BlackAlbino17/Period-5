@@ -1,16 +1,3 @@
-:- dynamic counter/1, prevCubeX/1, prevCubeY/1, get_piece/2.
-
-:- use_module(library(lists)).
-:- use_module(library(random)).
-:- use_module(library(between)).
-:- use_module(library(system)).
-:- use_module(library(sets)).
-:- consult('logic.pl').
-:- consult('utils.pl').
-:- consult('board.pl').
-:- consult('ai.pl').
-
-
 % Define a predicate to start the game loop.
 
 start_game(CurrentPlayer,NextPlayer) :-

@@ -3,10 +3,6 @@
 make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     repeat,
     nl,
- /*   (winning_next_move(Board, CurrentPlayer) -> 
-       retract((is_player_piece(' cube ', NextPlayer)));
-       true),
-       */
     ((Player == 'Player 1'; Player == 'Player 2') ->   
     write('Which piece do you want to move?'), nl,
     write('Row: '), nl, read(Row),
@@ -22,7 +18,11 @@ make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     (counter(Counter),Counter == 1)->retract(counter(1)), asserta(counter(0));
     true),
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard);
-    easy_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard)).
+    level(CurrentPlayer,Level) -> ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,Level)
+    ).
+
+
+
 
 % Predicado para mover a peça e remover a peça na posição original.
 placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard) :-
