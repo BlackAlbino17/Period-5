@@ -1,3 +1,4 @@
+:- dynamic counter/1.
 :- use_module(library(sets)).
 :- use_module(library(between)).
 :- use_module(library(random)).

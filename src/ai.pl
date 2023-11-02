@@ -19,6 +19,12 @@ easy_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard) :-
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
 expert_level_ai(Board, Player, Row, Column, Row1, Column1) :-
+    ((counter(Counter),Counter == 0, Piece == ' cube '  )-> retract(counter(0)), asserta(counter(1)),counter(X),write(X),nl, set_prevCubePos(Row,Column);
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> \+ cube_non_repeated_move(Row, Column, Row1, Column1),fail;
+    (counter(Counter),Counter == 1, Piece == ' cube '  )-> cube_non_repeated_move(Row, Column, Row1, Column1),nl,counter(X),write(X),nl;
+    (counter(Counter),Counter == 1)->retract(counter(1)), asserta(counter(0));
+    true),
+
     (winning_state(Board, Player, Row, Column, Row1, Column1) -> true ; 
         (get_all_player_moves(Board, Player, ValidMoves), 
         evaluate_moves(Board, Player, ValidMoves, EvaluatedMoves), 
@@ -30,7 +36,10 @@ expert_level_ai(Board, Player, Row, Column, Row1, Column1) :-
             random_member((Row, Column, Row1, Column1), MovesWithColorLost);
             (MovesWithColorGain = []) ->
                 (random_member((Row, Column, Row1, Column1), MovesWithColorKept) ; random_member((Row, Column, Row1, Column1), MovesWithColorLost));
-                random_member((Row, Column, Row1, Column1), MovesWithColorGain)))).
+                random_member((Row, Column, Row1, Column1), MovesWithColorGain)))),
+
+      placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard),
+      write(Row),nl,write(Column),nl,write(Row1),nl,write(Column1). 
 
 
 
