@@ -14,7 +14,7 @@ easy_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard) :-
 ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,1) :-
     easy_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard).
 
-ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,1) :-
+ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,2) :-
     expert_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard).
 
 
