@@ -150,8 +150,12 @@ simulate_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     one_piece_per_column_check(Recent, Player),
     color_check(Recent, Player).
 
+winning_state(Board, Player, Row, Column, Row1, Column1) :-
+    get_all_player_moves(Board, Player, ValidMoves),
+    member((Row, Column, Row1, Column1), ValidMoves),
+    simulate_move(Board, Row, Column, Row1, Column1, SimulatedBoard, Player),
+    !.
 
-% Predicado para lista de cores de um jogador
 
 get_player_colors(Board, Player, PlayerColors, BoardColors) :-
     initialBoardColor(BoardColors),
