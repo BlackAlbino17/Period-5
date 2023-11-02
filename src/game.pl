@@ -1,11 +1,12 @@
 :- use_module(library(sets)).
 :- use_module(library(between)).
+:- use_module(library(random)).
 :- consult('logic.pl').
 :- consult('utils.pl').
 :- consult('board.pl').
 :- consult('input.pl').
 :- consult('menu.pl').
-
+:- consult('ai.pl').
 
 
 

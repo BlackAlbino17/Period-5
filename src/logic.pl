@@ -20,6 +20,8 @@ placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard) :-
     % Place the piece in the new cell.
     placePiece(TempBoard, Piece, Row1, Column1, NewBoard).
 
+   
+
 replace([_|T], 1, X, [X|T]) :- !.
 replace([H|T], I, X, [H|R]) :- I > 1,
                     NI is I-1,
@@ -89,6 +91,12 @@ simulate_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     color_check(Recent, Player).
 
 
+
+winning_state(Board, Player, Row, Column, Row1, Column1) :-
+    get_all_player_moves(Board, Player, ValidMoves),
+    member((Row, Column, Row1, Column1), ValidMoves),
+    simulate_move(Board, Row, Column, Row1, Column1, SimulatedBoard, Player),
+    !.
 
 
 
