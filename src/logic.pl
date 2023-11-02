@@ -18,7 +18,7 @@ make_move(Board, Row, Column, Row1, Column1, NewBoard, Player) :-
     (counter(Counter),Counter == 1)->retract(counter(1)), asserta(counter(0));
     true),
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard);
-    level(CurrentPlayer,Level) -> ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,Level)
+    level(Player,Level) -> ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,Level)
     ).
 
 
@@ -189,25 +189,4 @@ color_check(Board, Player) :-
 
 
 
-    
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-/*
-% A move is valid if it follows the rules.
-valid_move(Board, Row, Column, Row1, Column1, Player) :-
-    is_player_piece(Board, Player, Row, Column, Piece), % Check if it's the player's piece.
-    valid_piece_move(Board, Row, Column, Row1, Column1, Piece), % Check valid piece moves.
-    \+ cube_repeated_move(Board, Row, Column, Row1, Column1), % Cube cannot return immediately.
-    \+ opponent_winning_next_move(Board, Row1, Column1, Piece, Player). % Opponent shouldn't win next move.
-
-
-
-
-
-opponent_winning_next_move(Board, Row, Column, Piece, Player) :-
-    switch_player(Player, Opponent),
-    valid_move(Board, Row, Column, _, _, Opponent), % Check if the opponent can win.
-    % Implement your win condition checking here.
-    % You need to check if the opponent's move would lead to a win in the next turn.
-    % Add your specific win condition logic.
-*/
-
+  
