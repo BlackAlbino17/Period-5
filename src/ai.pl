@@ -1,3 +1,8 @@
+/*
+easy_level_ai(+Board, +Player, -Row, -Column, -Row1, -Column1, -NewBoard)
+Predicate that creates our easy ('dumb') AI. It simply retrieves the list of valid moves and procedes to select 1 member or the list with random and play it.
+*/
+
 easy_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard) :- 
     get_all_player_moves(Board, Player, ValidMoves),
     random_member((Row, Column, Row1, Column1), ValidMoves),
@@ -17,6 +22,17 @@ ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,1) :-
 ai_move(Board, Player, Row, Column, Row1, Column1,NewBoard,2) :-
     expert_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard).
 
+
+/*
+expert_level_ai(+Board, +Player, -Row, -Column, -Row1, -Column1, -NewBoard)
+Predicate that creates our hard level mode. It start by retrieving the list of all valid moves but this time it doenst select them at random.
+We created another auxiliar predicate that will evaluate | give value to the moves sorting them by whether or not a player can win a color for their
+collection with the move.
+Then we filter them with 3 different filter predicates and create lists for them.
+At the main predicate we then select a move based | with priority for moves that will lead to a color_gain (if there are more than one then it will
+random between them). (Priority for Gain -> Keep -> Lost).
+It also avoids putting a piece in a column where a player already has a color present with the use of member().
+*/
 
 expert_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard) :-
 
@@ -64,6 +80,8 @@ expert_level_ai(Board, Player, Row, Column, Row1, Column1,NewBoard) :-
 
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+
 evaluate_moves(Board, Player, ValidMoves, EvaluatedMoves) :-
     maplist(evaluate_single_move(Board, Player), ValidMoves, EvaluatedMoves).
 
@@ -71,6 +89,11 @@ evaluate_single_move(Board, Player, (Row, Column, Row1, Column1), (Move, Evaluat
     evaluate_move_aux(Board, Player, Row, Column, Row1, Column1, EvaluationResult),
     Move = (Row, Column, Row1, Column1).
 
+
+/*
+evaluate_move_aux(+Board, +Player, +Row, +Column, +Row1, +Column1, -List)
+Predicate to value a move based on if a player won or lost or kept the number of colors he originally had.
+*/
 evaluate_move_aux(Board, Player, Row, Column, Row1, Column1, EvaluationResult) :-
     placePieceAndRemove(Board, Row, Column, Row1, Column1, NewBoard),
     get_player_colors(Board, Player, CurrentColors, _),
@@ -81,6 +104,9 @@ evaluate_move_aux(Board, Player, Row, Column, Row1, Column1, EvaluationResult) :
     EvaluationResult = color_gain).
 
 
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
+/* Predicates responsible for filtering the entire valid move list and create a new one with a value and the respective X and Y moves
+/*--------------------------------------------------------------------------------------------------------------------------------------------------*/
 find_moves_with_color_gain(EvaluatedMoves, MovesWithColorGain) :-
     findall(Move, (member((Move, color_gain), EvaluatedMoves)), MovesWithColorGain).
 
@@ -91,19 +117,3 @@ find_moves_with_color_kept(EvaluatedMoves, MovesWithColorKept) :-
 find_moves_with_color_lost(EvaluatedMoves, MovesWithColorLost) :-
     findall(Move, (member((Move, color_lost), EvaluatedMoves)), MovesWithColorLost).
 
-
-
-/*------------------------------------------------------------------------------------------------------------------------------------------------- */
-
-
-% initialBoard(Board), evaluate_move_aux(Board, 'Player 1', 5, 4, 4, 4, EvaluationResult).
-
-% initialBoard(Board),computer_move(Board, 'Player 1', Row, Column, Row1, Column1),write('Computer move: '),write((Row, Column, Row1, Column1)), nl.
-
-
-% find_moves_with_color_gain(EvaluatedMoves, MovesWithColorGain).
-
-% initialBoard(Board), Player = 'Player 1', ValidMoves = [(5,4,4,4),(2,1,2,2),(2,1,3,1),(2,1,4,1),(2,1,5,1)], evaluate_moves(Board, Player, ValidMoves, EvaluatedMoves)
-
-
-/*------------------------------------------------------------------------------------------------------------------------------------------------- */

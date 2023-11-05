@@ -1,7 +1,4 @@
-% Define a predicate to start the game loop.
-
 start_game(CurrentPlayer,NextPlayer) :-
-    % Initialize the initial board and other game parameters here.
     initialBoard(InitialBoard),
     display_initial_board,
     asserta(counter(0)),
@@ -15,7 +12,7 @@ start_game(CurrentPlayer,NextPlayer) :-
     asserta(switch_player(NextPlayer, CurrentPlayer)),
     game_loop(InitialBoard, CurrentPlayer, NextPlayer).
 
-% Define the game loop predicate.
+
 game_loop(Board, CurrentPlayer, NextPlayer) :-
     write(CurrentPlayer), write('\'s turn.'), nl,
     (winning_next_move(Board, NextPlayer) ->
@@ -30,7 +27,6 @@ game_loop(Board, CurrentPlayer, NextPlayer) :-
     nl,
     display_color_board,
 
-    % Switch players and continue the game loop
     switch_player(CurrentPlayer, NextPlayer),
     game_loop(NewBoard, NextPlayer, CurrentPlayer).
 
